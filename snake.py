@@ -3,7 +3,10 @@ import random
 import time
 
 
-def game_loop(window, difficulty):
+def game_loop(window, difficulty=None):
+    if difficulty is None:
+        difficulty = intro_animation(window)
+
     direction = curses.KEY_RIGHT
     snake = [
         [10, 14],
@@ -40,14 +43,29 @@ def game_loop(window, difficulty):
     finish_game(score=score, window=window)
     
 
-def finish_game(score,window):
+def finish_game(score, window):
     height, width = window.getmaxyx()
-    s = f"Game Over! Score {score}"
-    y = int(height/2)
-    x = int((width - len(s)) /2)      
-    window.addstr(y, x, s)     
-    window.refresh()    
-    time.sleep(3.5)     
+
+    # Animação: preenchendo a tela linha por linha com #
+    for i in range(height):
+        window.addstr(i, 0, "#" * (width - 1))  # -1 para não estourar
+        window.refresh()
+        time.sleep(0.02)
+
+    # Mensagem de Game Over
+    s = f" GAME OVER! Score: {score} "
+    y = height // 2
+    x = (width - len(s)) // 2
+
+    window.attron(curses.A_BOLD)
+    window.attron(curses.A_REVERSE)
+    window.addstr(y, x, s)
+    window.attroff(curses.A_REVERSE)
+    window.attroff(curses.A_BOLD)
+
+    window.refresh()
+    time.sleep(3.5)
+    
         
         
         
@@ -90,6 +108,134 @@ def move_snake(snake, direction, fruit):
     snake.insert(0, head)
     if not snake_hit_fruit(snake, fruit):
         snake.pop()
+
+def intro_animation(window):
+    window.clear()
+    curses.curs_set(0)
+    height, width = window.getmaxyx()
+    window.nodelay(True)
+
+        # Phase 1: Snake ASCII animations
+    snake_frames = [
+        "oOoOoO~",
+        "~oOoOoO",
+        "OoOoOo>",
+        "<OoOoOo"
+    ]
+    
+    for _ in range(8):
+        y = random.randint(2, height - 3)
+        direction = random.choice(["left", "right"])
+        frame = random.choice(snake_frames)
+        length = len(frame)
+
+        if direction == "right":
+            for x in range(2, width - length - 2, 2):
+                window.addstr(y, x, frame)
+                window.refresh()
+                time.sleep(0.01)
+                window.addstr(y, x, " " * length)
+        else:  # left
+            for x in reversed(range(2, width - length - 2, 2)):
+                window.addstr(y, x, frame)
+                window.refresh()
+                time.sleep(0.01)
+                window.addstr(y, x, " " * length)
+
+    time.sleep(0.5)
+    window.clear()
+
+
+    # Phase 2: Loading bar
+    loading_text = "Loading..."
+    x_loading = (width - len(loading_text)) // 2
+    y_loading = height // 2 - 5
+    window.addstr(y_loading, x_loading, loading_text)
+    window.refresh()
+    time.sleep(0.5)
+
+    for i in range(1, width - 20, 3):
+        bar = "[" + "#" * (i // 3) + " " * ((width - 20) // 3 - i // 3) + "]"
+        window.addstr(y_loading + 1, (width - len(bar)) // 2, bar)
+        window.refresh()
+        time.sleep(0.05)
+
+    time.sleep(0.5)
+    window.clear()
+
+    # Phase 3: Title with typing effect
+    title = ">>> S N A K E   G A M E <<<"
+    x_title = (width - len(title)) // 2
+    y_title = height // 2 - 5
+    for i in range(len(title)):
+        window.addstr(y_title, x_title + i, title[i])
+        window.refresh()
+        time.sleep(0.08)
+
+    # Blinking title effect
+    for _ in range(4):
+        window.attron(curses.A_BOLD)
+        window.addstr(y_title, x_title, title)
+        window.attroff(curses.A_BOLD)
+        window.refresh()
+        time.sleep(0.3)
+        window.addstr(y_title, x_title, " " * len(title))
+        window.refresh()
+        time.sleep(0.2)
+
+    window.addstr(y_title, x_title, title)
+    window.refresh()
+
+    # Subtitle in English
+    subtitle = "Use ↑ ↓ to select difficulty and press ENTER to start"
+    window.attron(curses.A_DIM)
+    window.addstr(y_title + 2, (width - len(subtitle)) // 2, subtitle)
+    window.attroff(curses.A_DIM)
+
+    # Difficulty options
+    difficulties = [
+        "Very Easy", "Easy", "Moderate", "Normal", "Challenging",
+        "Hard", "Very Hard", "Extreme", "Insane", "Impossible"
+    ]
+    selected = 3
+
+    while True:
+        for i, diff in enumerate(difficulties):
+            y = height // 2 + i
+            x = (width - 24) // 2
+            prefix = ">>" if i == selected else "  "
+            suffix = "<<" if i == selected else "  "
+            display = f"{prefix} {diff.center(18)} {suffix}"
+            if i == selected:
+                window.attron(curses.A_REVERSE)
+                window.addstr(y, x, display)
+                window.attroff(curses.A_REVERSE)
+            else:
+                window.addstr(y, x, display)
+        window.refresh()
+
+        key = window.getch()
+        if key == curses.KEY_UP and selected > 0:
+            selected -= 1
+        elif key == curses.KEY_DOWN and selected < len(difficulties) - 1:
+            selected += 1
+        elif key in [curses.KEY_ENTER, 10, 13]:
+            break
+        time.sleep(0.05)
+
+    # Final dramatic pause before game starts
+    window.clear()
+    final_msg = f"Starting on: {difficulties[selected]} Mode"
+    window.addstr(height // 2, (width - len(final_msg)) // 2, final_msg)
+    window.refresh()
+    time.sleep(2)
+
+    window.clear()
+    window.nodelay(True)
+    return selected + 1
+
+
+
         
         
 def snake_hit_itself(snake):
@@ -130,28 +276,9 @@ def get_new_fruit(window):
 def snake_hit_fruit(snake, fruit):
     return fruit in snake
 
-def select_difficulty():
-    conv = {
-        1: 1000,
-        2: 900,
-        3: 700,
-        4: 600,
-        5: 400,
-        6: 300,
-        7: 200,
-        8: 100,
-        9: 150,
-        10: 80,
-        11: 1,
-    }
-    
-    try:
-        diff = int(input("Select your difficulty (1 to 10): "))
-    except ValueError:  
-        print("Invalid input. Defaulting to 1.")
-        diff = 1
-    return conv.get(diff, 1000)
-    
 
 if __name__ == "__main__":
-    curses.wrapper(game_loop, difficulty=select_difficulty())
+    def start(window):
+        difficulty = intro_animation(window)
+        game_loop(window, difficulty)
+    curses.wrapper(start)
