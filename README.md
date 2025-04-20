@@ -23,11 +23,69 @@ Enjoy animated intros, ASCII snakes, dynamic difficulty levels, and a responsive
 ### 🔧 Requirements
 
 - Python 3.x
-- A Unix-like terminal that supports `curses` (Linux, macOS, WSL, etc.)
 
-> ❗ This game **won’t run properly on Windows CMD or PowerShell** — use WSL or a compatible terminal emulator.
+### 💻 Windows Users
+
+Python’s `curses` library is not included by default on Windows.  
+To run this game on Windows, **you must install**:
+
+```bash
+pip install windows-curses
+```
+
+> You can run the game inside a terminal like Windows Terminal, Git Bash, or WSL. PowerShell/CMD may have issues with rendering.
 
 ### ▶️ Running the Game
 
 ```bash
 python snake_game.py
+```
+
+> You'll be greeted with a cinematic intro. Use arrow keys to select difficulty and hit **ENTER** to begin!
+
+---
+
+## 🎮 Controls
+
+| Key         | Action               |
+|-------------|----------------------|
+| ↑ / ↓ / ← / → | Move the snake        |
+| ENTER       | Select difficulty     |
+| ESC         | Quit the game         |
+
+
+---
+
+## 🧠 About the Code
+
+- **`game_loop`**: Core loop that controls snake movement, collision, and scoring.
+- **`intro_animation`**: Multi-phase intro with ASCII animation, loading bar, and difficulty selector.
+- **`draw_*` functions**: Handle rendering of snake, fruit, and UI borders.
+- **`curses.wrapper(start)`**: Safely initializes and terminates the terminal in a clean state.
+
+---
+
+## 📁 File Structure
+
+```plaintext
+snake_game.py   # All game logic in a single file
+README.md       # You're here!
+```
+
+---
+
+## 💡 Tips
+
+- Start on **Moderate** for a balanced experience.
+- As difficulty increases, game speed becomes faster.
+- Try reaching a high score on **Impossible**... if you dare 🧠🔥
+
+---
+
+## 📜 License
+
+This project is free and open-source under the MIT License.
+
+---
+
+Made with ❤️ in the terminal — and coded in just 2 hours on a Saturday.
