@@ -1,6 +1,7 @@
 # 🐍 Snake Game (Terminal Edition)
 
 Welcome to the **Terminal Snake Game**, a retro-style game built entirely in Python using the `curses` library!  
+This was a fun little **2-hour Saturday project**, crafted with care and nostalgia to bring the classic Snake to your terminal.  
 Enjoy animated intros, ASCII snakes, dynamic difficulty levels, and a responsive, fast-paced gameplay loop — all inside your terminal window!
 
 ---
