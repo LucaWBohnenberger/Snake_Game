@@ -1,4 +1,4 @@
-# 🐍 Snake Game (Terminal Edition)
+# Snake Game (Terminal Edition)
 
 Welcome to the **Terminal Snake Game**, a retro-style game built entirely in Python using the `curses` library!  
 This was a fun little **2-hour Saturday project**, crafted with care and nostalgia to bring the classic Snake to your terminal.  
@@ -6,25 +6,25 @@ Enjoy animated intros, ASCII snakes, dynamic difficulty levels, and a responsive
 
 ---
 
-## 🎮 Features
+##  Features
 
-- 🐍 Classic Snake gameplay
-- 🎞 ASCII animation intro with moving snakes
-- ⏳ Animated loading and blinking title effects
-- 🎚 Difficulty selector with 10 levels, from *Very Easy* to *Impossible*
-- 🍎 Fruits randomly appear, and eating them increases your score
-- 🧱 Game Over screen with terminal-filling animation
-- 💀 Snake collision with walls or itself ends the game
+- Classic Snake gameplay
+- ASCII animation intro with moving snakes
+- Animated loading and blinking title effects
+- Difficulty selector with 10 levels, from *Very Easy* to *Impossible*
+- Fruits randomly appear, and eating them increases your score
+- Game Over screen with terminal-filling animation
+- Snake collision with walls or itself ends the game
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
-### 🔧 Requirements
+### Requirements
 
 - Python 3.x
 
-### 💻 Windows Users
+### Windows Users
 
 Python’s `curses` library is not included by default on Windows.  
 To run this game on Windows, **you must install**:
@@ -35,7 +35,7 @@ pip install windows-curses
 
 > You can run the game inside a terminal like Windows Terminal, Git Bash, or WSL. PowerShell/CMD may have issues with rendering.
 
-### ▶️ Running the Game
+### Running the Game
 
 ```bash
 python snake_game.py
@@ -56,7 +56,7 @@ python snake_game.py
 
 ---
 
-## 🧠 About the Code
+## About the Code
 
 - **`game_loop`**: Core loop that controls snake movement, collision, and scoring.
 - **`intro_animation`**: Multi-phase intro with ASCII animation, loading bar, and difficulty selector.
@@ -65,7 +65,7 @@ python snake_game.py
 
 ---
 
-## 📁 File Structure
+## File Structure
 
 ```plaintext
 snake_game.py   # All game logic in a single file
@@ -74,7 +74,7 @@ README.md       # You're here!
 
 ---
 
-## 💡 Tips
+## Tips
 
 - Start on **Moderate** for a balanced experience.
 - As difficulty increases, game speed becomes faster.
@@ -82,10 +82,10 @@ README.md       # You're here!
 
 ---
 
-## 📜 License
+## License
 
 This project is free and open-source under the MIT License.
 
 ---
 
-Made with ❤️ in the terminal — and coded in just 2 hours on a Saturday.
+Made with ❤️ in the terminal
